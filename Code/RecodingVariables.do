@@ -17,6 +17,9 @@ rename v0601 gender
 rename v6033 age
 rename v0606 race
 
+gen female = 0
+replace female = 1 if gender ==2
+
 * Location of Birth
 rename v0618 bornincity
 rename v0619 borninstate
@@ -220,12 +223,15 @@ egen total_employees = total(employed), by(cityofjob)
 egen total_selfemployed = total(selfemployed), by(cityofjob)
 egen total_formal = total(formal), by(cityofjob)
 egen total_infomal = total(informal), by(cityofjob)
+egen total_employer = total(employer), by(cityofjob)
 
 save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", replace
 
 * Female totals 
-egen total_female = total(gender) if gender==2, by(cityofjob)
-egen total_female_emp = total(employed) if gender==2, by(cityofjob)
+egen total_female = total(female), by(cityofjob)
+egen total_female_emp = total(employed*female), by(cityofjob)
+egen total_female_self = total(selfemployed*female), by(cityofjob)
+egen total_female_employer = total(employer*female), by(cityofjob)
 
 * Manager Totals 
 egen manager_t = total(manager), by(cityofjob)
@@ -241,14 +247,19 @@ egen female_manager_public_t = total(female_manager_public), by(cityofjob)
 save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", replace
 
 
+use  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta"
+
+drop v0625 v6252 v6254 v6256 v0626 v6262 v6264 v6266 literate v0628 v0629 v0630 v0631 v0632 v0633 v0634 v0635 v6400 v6352 v6354 v6356 v0636 v6362 v6364 v6366 v0637 v0638 v0639 v0640 v0641 v0642 v0643 v0644 v0645 v6461 v0649 v0650 v0651 v6511 v6513 v6514 v0652 v6521 v6524 v6525 v6526 v6527 v6528 v6529 v6530 v6531 v6532 v0653 v0654 v0655 v0656 v0657 v0658 v0659 v6591 v0660 v6602 v0661 v0662 v0663 v6631 v6632 v6633 v0664 v6641 v6642 v6643 v0665 v6660 v6664 v0667 v0668 v6681 v6682 v0669 v6691 v6692 v6693 v6800 v0670 v0671 v6900 v6910 v6920 v6930 v6940 v6121 v0604 v0605 v5020 v5060 v5070 v5080 v6462 v6472 v5110 v5120 v5030 v5040 v5090 v5100 v5130 v1005 v0011 v0010 v1002 v1003 v0502 v0504 v6036 v6037 v6040 v0620 v0621 v0622 v6222 v0623 v6471 v6400_s
+
+
 * Counts per Category
  
 foreach k in agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined {
 
-	
-	egen `k'_count = total(`k'), by(cityofjob)
-	egen manager_`k' = total(manager) if `k'==1, by(cityofjob)
-	egen female_manager_`k' = total(female_manager) if `k', by(cityofjob)
+	egen `k'_count = total(employed*`k'), by(cityofjob)
+	egen `k'_female = total(employed*`k'*female), by(cityofjob)
+	egen manager_`k' = total(manager*`k'), by(cityofjob)
+	egen female_manager_`k' = total(female_manager*`k'), by(cityofjob)
 	
 }
 
