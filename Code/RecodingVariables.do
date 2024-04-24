@@ -243,12 +243,12 @@ save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Perso
 
 * Counts per Category
  
-foreach k agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined {
+foreach k in agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined {
 
 	
 	egen `k'_count = total(`k'), by(cityofjob)
-	egen female_manager_`k' = total(female_manager_`k'), by(cityofjob)
-	egen female_manager_priv`k' = total(female_manager_priv*`k'), by(cityofjob)
+	egen manager_`k' = total(manager) if `k'==1, by(cityofjob)
+	egen female_manager_`k' = total(female_manager) if `k', by(cityofjob)
 	
 }
 
