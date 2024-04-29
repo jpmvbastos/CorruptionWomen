@@ -10,15 +10,17 @@ destring ibge_code, replace
 
 merge 1:1 ibge_code using "/Users/jpmvbastos/Documents/GitHub/CorruptionRentSeeking/Data/Full_Data_August2023.dta"
 
+drop _merge
+
 gen munic_code = ibge_code
 
 merge 1:1 munic_code using "/Users/jpmvbastos/Documents/GitHub/CorruptionEntrepreneurs/Data/municipality_level.dta"
 
+drop _merge
 
 replace total_female = (1-male) * population 
 
-gen log_gdppc = log(gdpppc)
-gen log_pop = log(population)
+gen log_gdppc = log(gdp_pc)
 
 ***** OUTCOME VARIABLES 
 
@@ -39,6 +41,9 @@ gen pct_female_managers = female_manager_t / total_female_emp
 * % of Females in leadership positions
 gen pct_female_leaders = (female_manager_t + total_female_employer) / total_female_emp 
 
+* % of Female that in informal jobs
+gen pct_female_informal = total_female_informal / total_female_emp
+
 
 ***** SHARE OF THAT CATEGORY THAT IS FEMALE
 
@@ -57,8 +62,14 @@ gen share_female_manager = female_manager_t / manager_t
 * % of leadership positions that are female
 gen share_female_leaders = (female_manager_t + total_female_employer) / (manager_t + total_employer)
 
+* % of informal workers that are female 
+gen share_female_informal = total_female_informal / total_informal
+
 
 save "CorruptionWomen_Final.dta", replace 
+
+
+use "CorruptionWomen_Final.dta", clear
 
 
 
@@ -95,6 +106,9 @@ foreach k in $share_outcomes {
 
 esttab using "Results/Table2.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
 esttab using "Results/Table2.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+
+reg pct_female_informal corruption3_full $controls $fixedef , cluster(uf_code)
 
 
 
