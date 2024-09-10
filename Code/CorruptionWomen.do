@@ -22,6 +22,8 @@ replace total_female = (1-male) * population
 
 gen log_gdppc = log(gdp_pc)
 
+gen log_density = log(density)
+
 ***** OUTCOME VARIABLES 
 
 * Female Labor Force participation
@@ -32,7 +34,7 @@ gen female_lfp = total_female_emp / total_female
 * % of Females that are self-employed
 gen pct_female_self = total_female_self / total_female_emp 
 
-* % of Employers that are female
+* % of Females that are employers
 gen pct_female_employer = total_female_employer / total_female_emp
 
 * % of Females that are managers 
@@ -63,7 +65,7 @@ gen share_female_manager = female_manager_t / manager_t
 gen share_female_leaders = (female_manager_t + total_female_employer) / (manager_t + total_employer)
 
 * % of informal workers that are female 
-gen share_female_informal = total_female_informal / total_informal
+gen share_female_informal = total_female_informal / (informal*total_employees)
 
 
 save "CorruptionWomen_Final.dta", replace 
@@ -71,13 +73,21 @@ save "CorruptionWomen_Final.dta", replace
 
 use "CorruptionWomen_Final.dta", clear
 
+**** SUMMARY STATS
 
+sum female_lfp pct_female_self pct_female_employer pct_female_managers pct_female_leaders pct_female_informal if corruption3_full!=.
+
+sum share_female_lf share_female_self share_female_employer share_female_manager share_female_leaders  share_female_informal if corruption3_full!=.
+
+sum log_gdppc population log_density size_informal college dist_capital male workage if corruption3_full!=.
+
+list municipality uf population informal size_informal agriculture total_employees total_emp_rais share_female_manager female_manager_t manager_t if (share_female_manager==1 | share_female_manager==0) & corruption3_full!=.
 
 global pct_outcomes = "female_lfp pct_female_self pct_female_employer pct_female_managers pct_female_leaders"
 
 global share_outcomes = "share_female_lf share_female_self share_female_employer share_female_manager share_female_leaders"
 
-global controls = "log_gdppc population density size_informal college dist_capital"
+global controls = "log_gdppc population log_density size_informal college dist_capital work_age"
 
 global fixedef = "i.sorteio_full i.uf_code"
 
