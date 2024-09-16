@@ -177,14 +177,6 @@ replace female_workage = workage_census==1 & gender==2
 gen female_lfp_census = 0 if female_workage==1
 replace female_lfp_census = 1 if female_workage==1 & employed==1
 
-
-egen total_female = total(female), by(cityofjob)
-egen total_female_informal = total(female_informal), by(cityofjob)
-egen total_female_self = total(female_self), by(cityofjob)
-egen total_female_employer = total(female_employer), by(cityofjob)
-egen total_female_employed = total(female_employed), by(cityofjob)
-egen total_female_workage = total(female_workage), by(cityofjob)
-
 *** INDUSTRIES 
 tostring(v6471), gen(worksector)
 gen work_code = substr(worksector,1,2) 
@@ -251,8 +243,7 @@ gen worksincity = 0 if employed==1 & v0660!=.
 replace worksincity = 1 if (v0660==1 | v0660==2) & employed==1
 
 rename v6604 cityofjob
-replace cityofjob = ibge_code if worksincity==1 
-replace cityofjob = . if employed!=1
+replace cityofjob = ibge_code if worksincity==1 | employed!=1
 
 
 * Totals
@@ -273,6 +264,13 @@ egen manager_public_t = total(manager_public), by(cityofjob)
 egen female_manager_t = total(female_manager), by(cityofjob)
 egen female_manager_priv_t = total(female_manager_priv), by(cityofjob)
 egen female_manager_public_t = total(female_manager_public), by(cityofjob)
+
+egen total_female = total(female), by(cityofjob)
+egen total_female_informal = total(female_informal), by(cityofjob)
+egen total_female_self = total(female_self), by(cityofjob)
+egen total_female_employer = total(female_employer), by(cityofjob)
+egen total_female_employed = total(female_employed), by(cityofjob)
+egen total_female_workage = total(female_workage), by(cityofjob)
 
 
 *use  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", clear
@@ -297,7 +295,7 @@ foreach k in agriculture extractive manufacturing electric construction rw trans
 save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", replace
 
 
-local vars "urban gender age foreigner inschool publicschool neverschool educationlevel manager manager_public manager_priv employed multiplejobs informal formal selfemployed employer  agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined worksincity total_employees total_selfemployed total_formal total_infomal female_manager female_manager_public female_manager_priv total_female total_female_employed manager_t manager_priv_t manager_public_t female_manager_t female_manager_priv_t female_manager_public_t female total_female_informal workage_census female_informal female_workage total_female_self total_female_employer total_female_workage total_employer agriculture_count agriculture_female extractive_count extractive_female manufacturing_count manufacturing_female electric_count electric_female construction_count construction_female rw_count rw_female transportation_count transportation_female accomodation_count accomodation_female finance_count finance_female profserv_count profserv_female education_count education_female health_count health_female publicadmin_count publicadmin_female dservices_count dservices_female international_count international_female poorlydefined_count poorlydefined_female"
+local vars "urban gender age foreigner inschool publicschool neverschool educationlevel manager manager_public manager_priv employed multiplejobs informal formal selfemployed employer  agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined worksincity total_employees total_selfemployed total_formal total_infomal female_manager female_manager_public female_manager_priv total_female total_female_employed manager_t manager_priv_t manager_public_t female_manager_t female_manager_priv_t female_manager_public_t female total_female_informal workage_census female_informal female_workage total_female_self total_female_employer total_female_workage total_employer agriculture_count agriculture_female extractive_count extractive_female manufacturing_count manufacturing_female electric_count electric_female construction_count construction_female rw_count rw_female transportation_count transportation_female accomodation_count accomodation_female finance_count finance_female profserv_count profserv_female education_count education_female health_count health_female publicadmin_count publicadmin_female dservices_count dservices_female international_count international_female poorlydefined_count poorlydefined_female female_lfp_census"
 
 keep `vars' cityofjob
 
