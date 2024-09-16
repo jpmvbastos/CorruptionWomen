@@ -1,6 +1,11 @@
 cd "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/"
 
-use "CorruptionWomen.dta", clear 
+* use "CorruptionWomen.dta", clear 
+
+use "CorruptionWomen_census_master.dta", clear 
+
+rename cityofjob ibge_code
+rename total_infomal total_informal
 
 tostring(ibge_code), replace
 
@@ -27,30 +32,30 @@ gen log_density = log(density)
 ***** OUTCOME VARIABLES 
 
 * Female Labor Force participation
-gen female_lfp = total_female_emp / total_female
+gen female_lfp = total_female_employed / total_female_workage
 
 ***** AS A % OF FEMALE LABOR FORCE
 
 * % of Females that are self-employed
-gen pct_female_self = total_female_self / total_female_emp 
+gen pct_female_self = total_female_self / total_female_employed
 
 * % of Females that are employers
-gen pct_female_employer = total_female_employer / total_female_emp
+gen pct_female_employer = total_female_employer / total_female_employed
 
 * % of Females that are managers 
-gen pct_female_managers = female_manager_t / total_female_emp
+gen pct_female_managers = female_manager_t / total_female_employed
 
 * % of Females in leadership positions
-gen pct_female_leaders = (female_manager_t + total_female_employer) / total_female_emp 
+gen pct_female_leaders = (female_manager_t + total_female_employer) / total_female_employed
 
 * % of Female that in informal jobs
-gen pct_female_informal = total_female_informal / total_female_emp
+gen pct_female_informal = total_female_informal / total_female_employed
 
 
 ***** SHARE OF THAT CATEGORY THAT IS FEMALE
 
 * Share of Labor force that is female
-gen share_female_lf = total_female_emp / total_employees
+gen share_female_lf = total_female_employed / total_employees
 
 * % of Self-Employed that are female
 gen share_female_self = total_female_self / total_selfemployed
@@ -65,7 +70,7 @@ gen share_female_manager = female_manager_t / manager_t
 gen share_female_leaders = (female_manager_t + total_female_employer) / (manager_t + total_employer)
 
 * % of informal workers that are female 
-gen share_female_informal = total_female_informal / (informal*total_employees)
+gen share_female_informal = total_female_informal / total_informal
 
 
 save "CorruptionWomen_Final.dta", replace 
