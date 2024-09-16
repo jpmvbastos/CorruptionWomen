@@ -29,6 +29,8 @@ gen log_gdppc = log(gdp_pc)
 
 gen log_density = log(density)
 
+gen log_population = log(population)
+
 ***** OUTCOME VARIABLES 
 
 * Female Labor Force participation
@@ -84,15 +86,15 @@ sum female_lfp pct_female_self pct_female_employer pct_female_managers pct_femal
 
 sum share_female_lf share_female_self share_female_employer share_female_manager share_female_leaders  share_female_informal if corruption3_full!=.
 
-sum log_gdppc population log_density size_informal college dist_capital male workage if corruption3_full!=.
+sum log_gdppc population log_density size_informal college dist_capital male workage urban if corruption3_full!=.
 
-list municipality uf population informal size_informal agriculture total_employees total_emp_rais share_female_manager female_manager_t manager_t if (share_female_manager==1 | share_female_manager==0) & corruption3_full!=.
+global pct_outcomes = "female_lfp pct_female_self pct_female_employer pct_female_managers pct_female_leaders pct_female_informal"
 
-global pct_outcomes = "female_lfp pct_female_self pct_female_employer pct_female_managers pct_female_leaders"
+global share_outcomes = "share_female_lf share_female_self share_female_employer share_female_manager share_female_leaders share_female_informal"
 
-global share_outcomes = "share_female_lf share_female_self share_female_employer share_female_manager share_female_leaders"
+global controls = "log_gdppc population log_density size_informal college workage male urban"
 
-global controls = "log_gdppc population log_density size_informal college dist_capital work_age"
+global sectors = "agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international"
 
 global fixedef = "i.sorteio_full i.uf_code"
 
@@ -102,7 +104,7 @@ eststo clear
 
 foreach k in  $pct_outcomes {
 	
-	eststo: reg `k' corruption3_full $controls $fixedef , cluster(uf_code)
+	eststo: reg `k' corruption3_full $controls $fixedef, cluster(uf_code)
 
 	
 }
@@ -123,10 +125,130 @@ esttab using "Results/Table2.tex", replace b(%9.3f) keep(corruption3_full $contr
 esttab using "Results/Table2.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
 
 
+global controls = "log_gdppc log_population log_density size_informal college workage male urban"
+
+eststo clear 
+
+foreach k in  $pct_outcomes {
+	
+	eststo: reg `k' corruption3_full $controls $fixedef, cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table3.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table3.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+eststo clear 
+
+foreach k in $share_outcomes {
+	
+	eststo: reg `k' corruption3_full  $controls $fixedef , cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table4.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table4.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+****** WITH POPULATION WEIGHTS
+
+eststo clear 
+
+foreach k in  $pct_outcomes {
+	
+	eststo: reg `k' corruption3_full $controls $fixedef [aweight=population], cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table5.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table5.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+eststo clear 
+
+foreach k in $share_outcomes {
+	
+	eststo: reg `k' corruption3_full  $controls $fixedef [aweight=population], cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table6.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table6.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+
+
+****** WITH SECTOR SHARES 
+
+eststo clear 
+
+foreach k in  $pct_outcomes {
+	
+	eststo: reg `k' corruption3_full $controls $fixedef $sectors, cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table7.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table7.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+eststo clear 
+
+foreach k in $share_outcomes {
+	
+	eststo: reg `k' corruption3_full  $controls $fixedef $sectors, cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table8.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table8.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+
+
+****** WITH POPULATION WEIGHTS
+
+eststo clear 
+
+foreach k in  $pct_outcomes {
+	
+	eststo: reg `k' corruption3_full $controls $fixedef $sectors [aweight=population], cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table9.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table9.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+eststo clear 
+
+foreach k in $share_outcomes {
+	
+	eststo: reg `k' corruption3_full  $controls $fixedef $sectors [aweight=population], cluster(uf_code)
+
+	
+}
+
+esttab using "Results/Table10.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table10.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+
+
+
+
+
+
+
+
+
+eststo
+
+
+
+
+
+
 reg pct_female_informal corruption3_full $controls $fixedef , cluster(uf_code)
-
-
-
 reg share_female_leaders corruption1_full $controls $fixedef , cluster(uf_code)
 reg share_female_leaders corruption2_full $controls $fixedef , cluster(uf_code)
 reg share_female_leaders corruption4_full $controls $fixedef , cluster(uf_code) // This one is significant 
