@@ -203,7 +203,6 @@ replace electric = 1 if (work_code == "35"| work_code == "36"| work_code == "37"
 gen construction = 0 if work_code!="." &  employed==1
 replace construction = 1 if (work_code == "41" | work_code == "42" | work_code == "43") & employed==1 & agriculture!=1 & extractive!=1
 
-
 gen rw = 0 if work_code!="." &  employed==1
 replace rw = 1 if (work_code == "45" | work_code == "48") &  employed==1 & agriculture!=1 & extractive!=1
 

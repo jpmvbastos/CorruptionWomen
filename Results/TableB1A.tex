@@ -1,0 +1,38 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+            &\multicolumn{1}{c}{share\_female\_employer}&\multicolumn{1}{c}{share\_female\_manager\_priv}&\multicolumn{1}{c}{share\_female\_leaders}\\
+\hline
+corruption3\_full&      -0.236\sym{**} &      -0.222\sym{***}&      -0.197\sym{***}\\
+            &     (0.086)         &     (0.066)         &     (0.057)         \\
+[1em]
+log\_gdppc   &       0.000         &      -0.002         &      -0.004         \\
+            &     (0.012)         &     (0.010)         &     (0.009)         \\
+[1em]
+log\_density &      -0.001         &       0.001         &       0.000         \\
+            &     (0.004)         &     (0.004)         &     (0.004)         \\
+[1em]
+size\_informal&       0.005         &       0.057         &      -0.003         \\
+            &     (0.055)         &     (0.046)         &     (0.046)         \\
+[1em]
+college     &       0.065         &       0.118         &       0.056         \\
+            &     (0.174)         &     (0.138)         &     (0.129)         \\
+[1em]
+workage     &      -0.046         &      -0.348         &      -0.259         \\
+            &     (0.266)         &     (0.233)         &     (0.208)         \\
+[1em]
+male        &      -1.167         &      -1.077\sym{**} &      -1.058\sym{*}  \\
+            &     (0.724)         &     (0.478)         &     (0.542)         \\
+[1em]
+urban       &       0.039         &       0.065\sym{*}  &       0.051         \\
+            &     (0.046)         &     (0.037)         &     (0.036)         \\
+\hline
+\(N\)       &         878         &         930         &         933         \\
+adj. \(R^{2}\)&       0.073         &       0.068         &       0.097         \\
+\hline\hline
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
