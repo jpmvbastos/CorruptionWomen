@@ -272,7 +272,9 @@ egen total_female_employed = total(female_employed), by(cityofjob)
 egen total_female_workage = total(female_workage), by(cityofjob)
 
 
-*use  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", clear
+********************************************************************************
+
+use  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", clear
 
 drop v0625 v6252 v6254 v6256 v0626 v6262 v6264 v6266 literate v0628 v0629 v0630 v0631 v0632 v0633 v0634 v0635 v6400 v6352 v6354 v6356 v0636 v6362 v6364 v6366 v0637 v0638 v0639 v0640 v0641 v0642 v0643 v0644 v0645 v6461 v0649 v0650 v0651 v6511 v6513 v6514 v0652 v6521 v6524 v6525 v6526 v6527 v6528 v6529 v6530 v6531 v6532 v0653 v0654 v0655 v0656 v0657 v0658 v0659 v6591 v0660 v6602 v0661 v0662 v0663 v6631 v6632 v6633 v0664 v6641 v6642 v6643 v0665 v6660 v6664 v0667 v0668 v6681 v6682 v0669 v6691 v6692 v6693 v6800 v0670 v0671 v6900 v6910 v6920 v6930 v6940 v6121 v0604 v0605 v5020 v5060 v5070 v5080 v6462 v6472 v5110 v5120 v5030 v5040 v5090 v5100 v5130 v1005 v0011 v0010 v1002 v1003 v0502 v0504 v6036 v6037 v6040 v0620 v0621 v0622 v6222 v0623 v6471 v6400_s
 
@@ -289,18 +291,38 @@ foreach k in agriculture extractive manufacturing electric construction rw trans
     
 }
 
-******
+* Female Leadership by Industry
 
-save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", replace
+foreach k in agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined {
+	
+	// Display the current iteration
+    display("Processing sector: `k'")
 
+	egen `k'_fmanager = total((`k' == 1) * female_manager), by(cityofjob) // Number of female manager in that industry
+	egen `k'_femployer = total((`k' == 1) * female_employer), by(cityofjob) // Number of female employer in that industry
+	egen `k'_manager = total((`k' == 1) * manager), by(cityofjob) // Number of managers in that industry
+	egen `k'_employer = total((`k' == 1) * employer), by(cityofjob) // Number of employers in that industry
+}
 
-local vars "urban gender age foreigner inschool publicschool neverschool educationlevel manager manager_public manager_priv employed multiplejobs informal formal selfemployed employer  agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined worksincity total_employees total_selfemployed total_formal total_infomal female_manager female_manager_public female_manager_priv total_female total_female_employed manager_t manager_priv_t manager_public_t female_manager_t female_manager_priv_t female_manager_public_t female total_female_informal workage_census female_informal female_workage total_female_self total_female_employer total_female_workage total_employer agriculture_count agriculture_female extractive_count extractive_female manufacturing_count manufacturing_female electric_count electric_female construction_count construction_female rw_count rw_female transportation_count transportation_female accomodation_count accomodation_female finance_count finance_female profserv_count profserv_female education_count education_female health_count health_female publicadmin_count publicadmin_female dservices_count dservices_female international_count international_female poorlydefined_count poorlydefined_female female_lfp_census"
+*save  "/Users/jpmvbastos/Library/CloudStorage/OneDrive-TexasTechUniversity/Personal/Projects/Data/Census/CENSO10_BRASIL.dta", replace
+
+local vars "urban gender age foreigner inschool publicschool neverschool educationlevel manager manager_public manager_priv employed multiplejobs informal formal selfemployed employer  agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined worksincity total_employees total_selfemployed total_formal total_infomal female_manager female_manager_public female_manager_priv total_female total_female_employed manager_t manager_priv_t manager_public_t female_manager_t female_manager_priv_t female_manager_public_t female total_female_informal workage_census female_informal female_workage total_female_self total_female_employer total_female_workage total_employer agriculture_count agriculture_female extractive_count extractive_female manufacturing_count manufacturing_female electric_count electric_female construction_count construction_female rw_count rw_female transportation_count transportation_female accomodation_count accomodation_female finance_count finance_female profserv_count profserv_female education_count education_female health_count health_female publicadmin_count publicadmin_female dservices_count dservices_female international_count international_female poorlydefined_count poorlydefined_female female_lfp_census *_fmanager *_manager *_femployer *_employer'"
 
 keep `vars' cityofjob
 
 collapse (mean) `vars', by(cityofjob)
 
-save "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/CorruptionWomen_census_master.dta", replace
+* Derived Variables of Female Leadership by Industry
+
+foreach k in agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international poorlydefined {
+	
+	// Display the current iteration
+    display("Processing sector: `k'")
+
+	gen share_fmanager_`k' = `k'_fmanager / `k'_manager
+}
+
+*save "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/CorruptionWomen_census_master.dta", replace
 
 
 
