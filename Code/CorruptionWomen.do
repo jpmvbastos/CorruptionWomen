@@ -19,6 +19,14 @@ drop _merge
 
 gen munic_code = ibge_code
 
+merge 1:1 ibge_code using "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/juizados.dta"
+
+destring jecivel jec_n jecriminal jecriminal_n delegaciamulher delegaciamulher_n, replace force
+
+gen judge = (jecivel==1 | jecriminal==1)
+
+drop _merge
+
 merge 1:1 munic_code using "/Users/jpmvbastos/Documents/GitHub/CorruptionEntrepreneurs/Data/municipality_level.dta"
 
 drop _merge
