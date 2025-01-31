@@ -1,0 +1,38 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+            &\multicolumn{1}{c}{share\_femployer\_transportation}&\multicolumn{1}{c}{share\_fmgmt\_transportation}&\multicolumn{1}{c}{share\_fleaders\_transportation}\\
+\hline
+corruption3\_full&      -0.933         &      -0.301         &      -0.293         \\
+            &     (0.615)         &     (0.400)         &     (0.351)         \\
+[1em]
+log\_gdppc   &      -0.040         &      -0.093\sym{**} &      -0.096\sym{**} \\
+            &     (0.065)         &     (0.043)         &     (0.041)         \\
+[1em]
+log\_density &      -0.002         &       0.008         &       0.008         \\
+            &     (0.022)         &     (0.020)         &     (0.017)         \\
+[1em]
+size\_informal&       0.002         &       0.144         &       0.084         \\
+            &     (0.308)         &     (0.312)         &     (0.267)         \\
+[1em]
+college     &      -0.766         &       0.037         &       0.353         \\
+            &     (1.042)         &     (1.037)         &     (1.032)         \\
+[1em]
+workage     &      -0.242         &       1.367         &       0.741         \\
+            &     (1.767)         &     (1.367)         &     (1.190)         \\
+[1em]
+male        &      -2.911         &      -3.942         &      -3.913\sym{**} \\
+            &     (3.653)         &     (2.424)         &     (1.678)         \\
+[1em]
+urban       &      -0.040         &      -0.071         &      -0.157         \\
+            &     (0.135)         &     (0.225)         &     (0.123)         \\
+\hline
+\(N\)       &         217         &         283         &         349         \\
+adj. \(R^{2}\)&       0.003         &      -0.000         &       0.049         \\
+\hline\hline
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}

@@ -1,0 +1,40 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+            &\multicolumn{1}{c}{share\_femployer\_construction}&\multicolumn{1}{c}{share\_fmgmt\_construction}&\multicolumn{1}{c}{share\_fleaders\_construction}\\
+\hline
+corruption3\_full&      -1.728\sym{***}&      -2.349\sym{**} &      -2.211\sym{***}\\
+            &     (0.625)         &     (1.123)         &     (0.801)         \\
+[1em]
+log\_gdppc   &      -0.009         &      -0.045         &      -0.011         \\
+            &     (0.018)         &     (0.039)         &     (0.021)         \\
+[1em]
+log\_density &      -0.020         &      -0.069\sym{**} &      -0.039\sym{**} \\
+            &     (0.019)         &     (0.028)         &     (0.016)         \\
+[1em]
+size\_informal&       0.083         &       0.044         &       0.039         \\
+            &     (0.179)         &     (0.210)         &     (0.184)         \\
+[1em]
+college     &      -0.521         &      -0.617         &      -0.742         \\
+            &     (0.443)         &     (0.707)         &     (0.600)         \\
+[1em]
+workage     &       0.370         &       0.606         &       0.158         \\
+            &     (0.498)         &     (1.092)         &     (0.454)         \\
+[1em]
+male        &       0.676         &      -0.379         &       0.860         \\
+            &     (1.683)         &     (1.763)         &     (1.738)         \\
+[1em]
+urban       &       0.021         &       0.351\sym{***}&       0.146         \\
+            &     (0.082)         &     (0.125)         &     (0.108)         \\
+\hline
+N           &     253.000         &     214.000         &     316.000         \\
+F\_Statistic &      10.647         &       9.500         &      11.602         \\
+J\_Statistic &       2.380         &       1.142         &       1.342         \\
+J\_Statistic\_pvalue&       0.497         &       0.767         &       0.719         \\
+\hline\hline
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
