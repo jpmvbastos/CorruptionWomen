@@ -1,40 +1,40 @@
 {
 \def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
-\begin{tabular}{l*{3}{c}}
+\begin{tabular}{l*{4}{c}}
 \hline\hline
-            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
-            &\multicolumn{1}{c}{pct\_femployer\_c}&\multicolumn{1}{c}{pct\_fmgmt\_c}&\multicolumn{1}{c}{pct\_fleaders\_c}\\
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{pct\_female\_c}&\multicolumn{1}{c}{pct\_femployer\_c}&\multicolumn{1}{c}{pct\_fmgmt\_c}&\multicolumn{1}{c}{pct\_fleaders\_construction}\\
 \hline
-corruption3\_full&      -0.084\sym{***}&      -0.130\sym{***}&      -0.214\sym{***}\\
-            &     (0.016)         &     (0.042)         &     (0.056)         \\
+corruption3\_full&      -0.021\sym{**} &      -0.084\sym{***}&      -0.130\sym{***}&      -0.077\sym{***}\\
+            &     (0.010)         &     (0.016)         &     (0.042)         &     (0.025)         \\
 [1em]
-log\_gdppc   &      -0.001\sym{*}  &       0.000         &      -0.000         \\
-            &     (0.000)         &     (0.001)         &     (0.001)         \\
+log\_gdppc   &      -0.000         &      -0.001\sym{*}  &       0.000         &      -0.000         \\
+            &     (0.000)         &     (0.000)         &     (0.001)         &     (0.001)         \\
 [1em]
-log\_density &       0.000         &       0.001         &       0.001         \\
-            &     (0.000)         &     (0.001)         &     (0.001)         \\
+log\_density &       0.000         &       0.000         &       0.001         &       0.000         \\
+            &     (0.000)         &     (0.000)         &     (0.001)         &     (0.000)         \\
 [1em]
-size\_informal&       0.005\sym{***}&       0.009\sym{***}&       0.014\sym{***}\\
-            &     (0.002)         &     (0.003)         &     (0.004)         \\
+size\_informal&       0.003\sym{***}&       0.005\sym{***}&       0.009\sym{***}&       0.003\sym{**} \\
+            &     (0.001)         &     (0.002)         &     (0.003)         &     (0.001)         \\
 [1em]
-college     &       0.078\sym{***}&       0.194\sym{***}&       0.272\sym{***}\\
-            &     (0.018)         &     (0.067)         &     (0.083)         \\
+college     &       0.027\sym{**} &       0.078\sym{***}&       0.194\sym{***}&       0.096\sym{***}\\
+            &     (0.012)         &     (0.018)         &     (0.067)         &     (0.028)         \\
 [1em]
-workage     &       0.020\sym{**} &       0.026\sym{**} &       0.046\sym{**} \\
-            &     (0.009)         &     (0.013)         &     (0.020)         \\
+workage     &       0.010\sym{**} &       0.020\sym{**} &       0.026\sym{**} &       0.009         \\
+            &     (0.004)         &     (0.009)         &     (0.013)         &     (0.009)         \\
 [1em]
-male        &       0.016         &       0.048         &       0.064         \\
-            &     (0.023)         &     (0.041)         &     (0.062)         \\
+male        &       0.002         &       0.016         &       0.048         &       0.027         \\
+            &     (0.011)         &     (0.023)         &     (0.041)         &     (0.028)         \\
 [1em]
-urban       &       0.002         &       0.003         &       0.005         \\
-            &     (0.002)         &     (0.004)         &     (0.006)         \\
+urban       &       0.001         &       0.002         &       0.003         &       0.002         \\
+            &     (0.001)         &     (0.002)         &     (0.004)         &     (0.003)         \\
 \hline
-N           &     929.000         &     929.000         &     929.000         \\
-F\_Statistic &      10.611         &      10.611         &      10.611         \\
-J\_Statistic &       2.472         &       5.776         &       4.873         \\
-J\_Statistic\_pvalue&       0.480         &       0.123         &       0.181         \\
+N           &     929.000         &     929.000         &     929.000         &     929.000         \\
+F\_Statistic &      10.611         &      10.611         &      10.611         &      10.611         \\
+J\_Statistic &       3.852         &       2.472         &       5.776         &       4.165         \\
+J\_Statistic\_pvalue&       0.278         &       0.480         &       0.123         &       0.244         \\
 \hline\hline
-\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
-\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
 \end{tabular}
 }

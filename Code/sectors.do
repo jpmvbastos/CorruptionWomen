@@ -120,13 +120,14 @@ gen pct_femployer_c = pct_femployer_extractive + pct_femployer_manufacturing +	 
 gen pct_fmgmt_c = pct_fmgmt_extractive + pct_fmgmt_manufacturing + ///
 	pct_fmgmt_construction + pct_fmgmt_transportation
 	
-gen pct_fleaders_c = pct_fleaders_extractive + pct_fleaders_manufacturing + ///
+gen pct_fleader_c = pct_fleaders_extractive + pct_fleaders_manufacturing + ///
 	pct_fleaders_construction + pct_fleaders_transportation
 	
-	
-gen share_female_c = (extractive_female + manufacturing_female + ///
+gen pct_female_c = (extractive_female + manufacturing_female + ///
 	construction_female + transportation_female) / (extractive_count + ///
 	manufacturing_count + construction_count + transportation_count) 
+	
+*******
 	
 gen share_femployer_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer) / (extractive_employer + ///
@@ -136,7 +137,7 @@ gen share_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
 	construction_fmanager + transportation_fmanager) / (extractive_manager + ///
 	manufacturing_manager + construction_manager + transportation_manager) 
 	
-gen share_fleader_c = (extractive_femployer + manufacturing_femployer + ///
+gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer + extractive_fmanager + ///
 	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
 	/ (extractive_employer + manufacturing_employer + construction_employer + ///
@@ -144,17 +145,13 @@ gen share_fleader_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_manager + transportation_manager) 
 	
 	
-	
-/**** SUMMARY STATS
+**** SUMMARY STATS
 
-sum share_female_employer share_female_manager_priv share_female_leaders share_female_self if corruption3_full!=.
+sum share_femployer_c share_fmgmt_c share_fleaders_c if corruption3_full!=.
 
-sum female_lfp pct_female_employer pct_female_managers pct_female_leaders pct_female_self if corruption3_full!=.
+sum pct_femployer_c pct_fmgmt_c pct_fleader_c pct_female_c if corruption3_full!=.
 
-sum gdp_pc density size_informal college dist_capital male workage urban if corruption3_full!=.
 
-sum agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices if corruption3_full!=.
-*/
 
 
 ***** ESTIMATES
@@ -162,7 +159,7 @@ global corrupt = "extractive manufacturing construction transportation c"
 
 global share_outcomes = "femployer fmgmt fleaders"
 
-global pct_outcomes = "femployer fmgmt fleaders"
+global pct_outcomes = "female femployer fmgmt fleaders"
 
 global controls = "log_gdppc log_density size_informal college workage male urban"
 
@@ -199,7 +196,7 @@ foreach v in  $corrupt {
 	
 		eststo: reg share_`k'_`v' corruption3_full $controls $sectors $fixedef, cluster(uf_code)
 	
-}
+	}
 
 	esttab using "Results/revision1/sectors/Table2B_`v'.tex", replace b(%9.3f) ///
 	keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
@@ -246,11 +243,13 @@ foreach v in  $corrupt {
 	keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) ///
 	stats(N F_Statistic J_Statistic J_Statistic_pvalue) se 
 
-
+}
 ******************** TABLE 3 - PERCENT OF FEMALE LABOR FORCE *******************
 
 	* PANEL A: OLS with Baseline Controls
 
+foreach v in c {
+	
 	eststo clear 
 
 	foreach k in  $pct_outcomes {
