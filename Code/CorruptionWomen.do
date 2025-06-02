@@ -81,8 +81,72 @@ gen share_female_informal = total_female_informal / total_informal
 
 xi i.uf_code i.sorteio_full
 
-save "CorruptionWomen_Final.dta", replace 
+***** CORRUPT SECTORS ONLY
 
+foreach v in extractive manufacturing construction transportation {
+	
+***** AS A % OF FEMALE LABOR FORCE
+
+* % of Females that are employers
+gen pct_femployer_`v' = `v'_femployer / `v'_female 
+
+* % of Females that are managers in private sector
+gen pct_fmgmt_`v' = `v'_fmanager / `v'_female 
+
+* % of Females in leadership positions
+gen pct_fleaders_`v' = (`v'_fmanager + `v'_femployer) / `v'_female 
+
+
+***** SHARE OF THAT CATEGORY THAT IS FEMALE
+
+* Share of that Sector 
+gen share_female_`v' = `v'_female / `v'_count
+
+* % of Employers that are female
+gen share_femployer_`v' = `v'_femployer / `v'_employer
+
+* % of Total Managers that are female
+gen share_fmgmt_`v' = `v'_fmanager / `v'_manager
+
+* % of leadership positions that are female
+gen share_fleaders_`v' = (`v'_fmanager + `v'_femployer) / (`v'_manager + `v'_employer)
+	
+}
+
+
+* Group the corrupt sectors together 
+gen pct_femployer_c = pct_femployer_extractive + pct_femployer_manufacturing +	  ///
+	pct_femployer_construction + pct_femployer_transportation
+	
+gen pct_fmgmt_c = pct_fmgmt_extractive + pct_fmgmt_manufacturing + ///
+	pct_fmgmt_construction + pct_fmgmt_transportation
+	
+gen pct_fleader_c = pct_fleaders_extractive + pct_fleaders_manufacturing + ///
+	pct_fleaders_construction + pct_fleaders_transportation
+	
+gen pct_female_c = (extractive_female + manufacturing_female + ///
+	construction_female + transportation_female) / (extractive_count + ///
+	manufacturing_count + construction_count + transportation_count) 
+	
+*******
+	
+gen share_femployer_c = (extractive_femployer + manufacturing_femployer + ///
+	construction_femployer + transportation_femployer) / (extractive_employer + ///
+	manufacturing_employer + construction_employer + transportation_employer) 
+	
+gen share_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
+	construction_fmanager + transportation_fmanager) / (extractive_manager + ///
+	manufacturing_manager + construction_manager + transportation_manager) 
+	
+gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
+	construction_femployer + transportation_femployer + extractive_fmanager + ///
+	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
+	/ (extractive_employer + manufacturing_employer + construction_employer + ///
+	transportation_employer + extractive_manager + manufacturing_manager + ///
+	construction_manager + transportation_manager) 
+
+
+save "CorruptionWomen_Final.dta", replace 
 
 use "CorruptionWomen_Final.dta", clear
 
