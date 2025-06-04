@@ -172,7 +172,7 @@ gen female_employed = 0
 replace female_employed = 1 if employed==1 & gender==2 
 
 gen female_workage = 0
-replace female_workage = workage_census==1 & gender==2
+replace female_workage = 1 if workage_census==1 & gender==2
 
 gen female_lfp_census = 0 if female_workage==1
 replace female_lfp_census = 1 if female_workage==1 & employed==1
@@ -237,13 +237,12 @@ replace international = 1 if work_code == "99" &  employed==1 & agriculture!=1 &
 gen poorlydefined = 0 if work_code!="." &  employed==1
 replace poorlydefined = 1 if work_code == "00" &  employed==1 & agriculture!=1 & extractive!=1
 
-** Errors my be between here
+
 gen worksincity = 0 if employed==1 & v0660!=. 
 replace worksincity = 1 if (v0660==1 | v0660==2) & employed==1
 
 rename v6604 cityofjob
 replace cityofjob = ibge_code if worksincity==1 | employed!=1 // This should be ==1
-* and here
 
 * Totals
 egen total_pop = count(cityofjob), by(cityofjob)
