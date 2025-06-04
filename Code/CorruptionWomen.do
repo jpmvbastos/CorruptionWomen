@@ -29,6 +29,12 @@ drop _merge
 
 merge 1:1 munic_code using "/Users/jpmvbastos/Documents/GitHub/CorruptionEntrepreneurs/Data/municipality_level.dta"
 
+cap drop _merge
+
+merge 1:1 cod_munic using "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/audits.dta"
+
+tab capital
+
 drop _merge
 
 replace total_female = (1-male) * population 
@@ -100,7 +106,7 @@ gen pct_fleaders_`v' = (`v'_fmanager + `v'_femployer) / `v'_female
 ***** SHARE OF THAT CATEGORY THAT IS FEMALE
 
 * Share of that Sector 
-gen share_female_`v' = `v'_female / `v'_count
+*gen share_female_`v' = `v'_female / `v'_count
 
 * % of Employers that are female
 gen share_femployer_`v' = `v'_femployer / `v'_employer
@@ -110,7 +116,6 @@ gen share_fmgmt_`v' = `v'_fmanager / `v'_manager
 
 * % of leadership positions that are female
 gen share_fleaders_`v' = (`v'_fmanager + `v'_femployer) / (`v'_manager + `v'_employer)
-	
 }
 
 
@@ -139,6 +144,13 @@ gen share_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
 	manufacturing_manager + construction_manager + transportation_manager) 
 	
 gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
+	construction_femployer + transportation_femployer + extractive_fmanager + ///
+	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
+	/ (extractive_employer + manufacturing_employer + construction_employer + ///
+	transportation_employer + extractive_manager + manufacturing_manager + ///
+	construction_manager + transportation_manager) 
+	
+gen share_fleaders_nc = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer + extractive_fmanager + ///
 	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
 	/ (extractive_employer + manufacturing_employer + construction_employer + ///
