@@ -5,36 +5,36 @@ use "CorruptionWomen_Final.dta", clear
 *------------------------------------------------------------------------------*
 * Overall Setup: Corrupt vs. Non-Corrupt Sectors
 *------------------------------------------------------------------------------*
-gen size_formal = 1 - size_informal
+cap gen size_formal = 1 - size_informal
 replace total_emp = total_emp_rais / (1 - size_informal) // size of all employees
 
-gen total_female_emp = 0
+cap gen total_female_emp = 0
 
 foreach k in agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices international {
 	
-	 qui gen count_`k' = `k' * total_emp // counts of (all employees) by sector
+	 qui cap gen count_`k' = `k' * total_emp // counts of (all employees) by sector
 	 
-	 qui gen share_female_`k' = `k'_female / `k'_count // female shares by industry
+	 qui cap gen share_female_`k' = `k'_female / `k'_count // female shares by industry
 	 
-	 qui gen female_count_`k' = share_female_`k' * count_`k' // female counts by industry
+	 qui cap gen female_count_`k' = share_female_`k' * count_`k' // female counts by industry
 	 
 	 qui replace total_female_emp =  total_female_emp + (female_count_`k')
 }
 
 * Shares and counts for all employes
-gen share_corrupt = (extractive + manufacturing + construction + transportation)
+cap gen share_corrupt = (extractive + manufacturing + construction + transportation)
 
-gen corrupt_count = share_corrupt * total_emp
+cap gen corrupt_count = share_corrupt * total_emp
 
-gen share_non_corrupt = (1 - share_corrupt)
+cap gen share_non_corrupt = (1 - share_corrupt)
 			
-gen non_corrupt_count = share_non_corrupt * total_emp
+cap gen non_corrupt_count = share_non_corrupt * total_emp
 	
 * Share of female in each sectors
-gen share_female_corrupt = (female_count_extractive + female_count_manufacturing ///
+cap gen share_female_corrupt = (female_count_extractive + female_count_manufacturing ///
 	+ female_count_construction + female_count_transportation) / total_female_emp
 						
-gen share_female_non_corrupt = (total_female_emp - female_count_extractive - /// 
+cap gen share_female_non_corrupt = (total_female_emp - female_count_extractive - /// 
 	female_count_manufacturing - female_count_construction - ///
 	female_count_transportation) / total_female_emp
 
@@ -42,11 +42,11 @@ gen share_female_non_corrupt = (total_female_emp - female_count_extractive - ///
 * Corrupt vs. Non-Corrupt Sectors: As a share of female labor force
 *------------------------------------------------------------------------------*
 
-gen pct_female_c = (extractive_female + manufacturing_female + ///
+cap gen pct_female_c = (extractive_female + manufacturing_female + ///
 	construction_female + transportation_female) / (extractive_count + ///
 	manufacturing_count + construction_count + transportation_count) 
 	
-gen pct_female_nc = ///
+cap gen pct_female_nc = ///
     (agriculture_female + electric_female + rw_female + accomodation_female + ///
      finance_female + profserv_female + education_female + health_female + ///
      publicadmin_female + dservices_female + international_female) / ///
@@ -54,11 +54,11 @@ gen pct_female_nc = ///
      finance_count + profserv_count + education_count + health_count + ///
      publicadmin_count + dservices_count + international_count)
 	
-gen pct_femployer_c = (extractive_femployer + manufacturing_femployer + ///
+cap gen pct_femployer_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer) / (extractive_female + ///
 	manufacturing_female + construction_female + transportation_female)
 	
-gen pct_femployer_nc = ///
+cap gen pct_femployer_nc = ///
     (agriculture_femployer + electric_femployer + rw_femployer + ///
      accomodation_femployer + finance_femployer + profserv_femployer + ///
      education_femployer + health_femployer + publicadmin_femployer + ///
@@ -68,11 +68,11 @@ gen pct_femployer_nc = ///
      education_female + health_female + publicadmin_female + ///
      dservices_female + international_female)
 	
-gen pct_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
+cap gen pct_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
 	construction_fmanager + transportation_fmanager) / (extractive_female + ///
 	manufacturing_female + construction_female + transportation_female)
 	
-gen pct_fmgmt_nc = ///
+cap gen pct_fmgmt_nc = ///
     (agriculture_fmanager + electric_fmanager + rw_fmanager + ///
      accomodation_fmanager + finance_fmanager + profserv_fmanager + ///
      education_fmanager + health_fmanager + publicadmin_fmanager + ///
@@ -82,37 +82,37 @@ gen pct_fmgmt_nc = ///
      education_female + health_female + publicadmin_female + ///
      dservices_female + international_female)
 	
-gen pct_fleader_c = pct_femployer_c + pct_fmgmt_c
+cap gen pct_fleader_c = pct_femployer_c + pct_fmgmt_c
 
-gen pct_fleader_nc = pct_femployer_nc + pct_fmgmt_nc
+cap gen pct_fleader_nc = pct_femployer_nc + pct_fmgmt_nc
 
 *------------------------------------------------------------------------------*
 * Corrupt vs. Non-Corrupt Sectors: As a share of leader positions
 *------------------------------------------------------------------------------*
 	
 * Female Employers in Corrupt
-gen share_femployer_c = (extractive_femployer + manufacturing_femployer + ///
+cap gen share_femployer_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer) / (extractive_employer + ///
 	manufacturing_employer + construction_employer + transportation_employer) 
 	
 
 * Female Employers in Non-Corrupt
-gen share_femployer_nc = (total_female_employer - (extractive_femployer + manufacturing_femployer + ///
+cap gen share_femployer_nc = (total_female_employer - (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer)) / (total_employer - (extractive_employer + ///
 	manufacturing_employer + construction_employer + transportation_employer)) 
 
 * Female managers in Corrupt	
-gen share_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
+cap gen share_fmgmt_c = (extractive_fmanager + manufacturing_fmanager + ///
 	construction_fmanager + transportation_fmanager) / (extractive_manager + ///
 	manufacturing_manager + construction_manager + transportation_manager) 
 
 * Female managers in non-Corrupt	
-gen share_fmgmt_nc = (female_manager_priv_t - (extractive_fmanager + manufacturing_fmanager + ///
+cap gen share_fmgmt_nc = (female_manager_priv_t - (extractive_fmanager + manufacturing_fmanager + ///
 	construction_fmanager + transportation_fmanager)) / (manager_priv_t - (extractive_manager + ///
 	manufacturing_manager + construction_manager + transportation_manager)) 	
 	
 * Female Leaders in corrupt: 
-gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
+cap gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer + extractive_fmanager + ///
 	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
 	/ (extractive_employer + manufacturing_employer + construction_employer + ///
@@ -120,7 +120,7 @@ gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
 	construction_manager + transportation_manager) 
 
 * Female Leaders in non corrupt
-gen share_fleaders_nc = (((female_manager_priv_t + total_female_employer)) ///
+cap gen share_fleaders_nc = (((female_manager_priv_t + total_female_employer)) ///
 	- (extractive_femployer + manufacturing_femployer + ///
 	construction_femployer + transportation_femployer + extractive_fmanager + ///
 	manufacturing_fmanager + construction_fmanager + transportation_fmanager)) ///
@@ -204,7 +204,7 @@ global fixedef = "_Isorteio_f_23 _Isorteio_f_24 _Isorteio_f_25 _Isorteio_f_26 _I
 	foreach k in $share_outcomes {
 		
 		* Run the 2SLS regression and store the results
-		eststo: ivreg2 share_`k'_c $controls $sectors $fixedef ///
+		eststo: ivreg2 share_`k'_c $controls $fixedef ///
 		(corruption3_full = councils councils_installed management judge), ///
 		first cluster(uf_code) partial(_cons $fixedef)
 		
@@ -226,7 +226,7 @@ global fixedef = "_Isorteio_f_23 _Isorteio_f_24 _Isorteio_f_25 _Isorteio_f_26 _I
 	foreach k in $share_outcomes {
 		
 		* Run the 2SLS regression and store the results
-		eststo: ivreg2 share_`k'_nc $controls $sectors _I* ///
+		eststo: ivreg2 share_`k'_nc $controls _I* ///
 		(corruption3_full = councils councils_installed management judge), ///
 		first cluster(uf_code) partial(_cons $fixedef)
 		
@@ -279,7 +279,7 @@ global fixedef = "_Isorteio_f_23 _Isorteio_f_24 _Isorteio_f_25 _Isorteio_f_26 _I
 	foreach k in $pct_outcomes {
 		
 		* Run the 2SLS regression and store the results
-		eststo: ivreg2 pct_`k'_c $controls $sectors _I* ///
+		eststo: ivreg2 pct_`k'_c $controls _I* ///
 		(corruption3_full = councils councils_installed management judge), ///
 		first cluster(uf_code) partial(_cons $fixedef)
 		
@@ -301,7 +301,7 @@ global fixedef = "_Isorteio_f_23 _Isorteio_f_24 _Isorteio_f_25 _Isorteio_f_26 _I
 	foreach k in $pct_outcomes {
 		
 		* Run the 2SLS regression and store the results
-		eststo: ivreg2 pct_`k'_nc $controls $sectors _I* ///
+		eststo: ivreg2 pct_`k'_nc $controls _I* ///
 		(corruption3_full = councils councils_installed management judge), ///
 		first cluster(uf_code) partial(_cons $fixedef)
 		

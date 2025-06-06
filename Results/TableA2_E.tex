@@ -1,0 +1,41 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{female\_lfp\_census}&\multicolumn{1}{c}{pct\_female\_employer}&\multicolumn{1}{c}{pct\_female\_managers\_priv}&\multicolumn{1}{c}{pct\_female\_leaders}\\
+\hline
+corruption3\_full&      -0.094         &      -0.017\sym{***}&      -0.017\sym{*}  &      -0.034\sym{***}\\
+            &     (0.072)         &     (0.005)         &     (0.009)         &     (0.012)         \\
+[1em]
+multiple    &      -0.004         &       0.002\sym{**} &      -0.000         &       0.002         \\
+            &     (0.005)         &     (0.001)         &     (0.001)         &     (0.002)         \\
+[1em]
+log\_gdppc   &       0.033\sym{***}&      -0.000         &       0.002\sym{*}  &       0.001         \\
+            &     (0.007)         &     (0.001)         &     (0.001)         &     (0.001)         \\
+[1em]
+log\_density &       0.002         &      -0.000         &       0.000         &      -0.000         \\
+            &     (0.004)         &     (0.000)         &     (0.001)         &     (0.001)         \\
+[1em]
+size\_informal&       0.061         &       0.002         &      -0.002         &      -0.000         \\
+            &     (0.061)         &     (0.003)         &     (0.005)         &     (0.006)         \\
+[1em]
+college     &       0.908\sym{***}&       0.062\sym{***}&       0.099\sym{***}&       0.160\sym{***}\\
+            &     (0.113)         &     (0.012)         &     (0.023)         &     (0.030)         \\
+[1em]
+workage     &       0.630\sym{***}&       0.021         &      -0.006         &       0.015         \\
+            &     (0.159)         &     (0.016)         &     (0.017)         &     (0.027)         \\
+[1em]
+male        &       0.280         &      -0.033         &       0.045         &       0.012         \\
+            &     (0.316)         &     (0.030)         &     (0.038)         &     (0.056)         \\
+[1em]
+urban       &       0.049         &       0.005\sym{**} &       0.016\sym{***}&       0.021\sym{***}\\
+            &     (0.054)         &     (0.003)         &     (0.003)         &     (0.005)         \\
+\hline
+\(N\)       &         935         &         935         &         935         &         935         \\
+adj. \(R^{2}\)&       0.696         &       0.238         &       0.193         &       0.274         \\
+\hline\hline
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
