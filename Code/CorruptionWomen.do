@@ -149,16 +149,11 @@ gen share_fleaders_c = (extractive_femployer + manufacturing_femployer + ///
 	/ (extractive_employer + manufacturing_employer + construction_employer + ///
 	transportation_employer + extractive_manager + manufacturing_manager + ///
 	construction_manager + transportation_manager) 
-	
-gen share_fleaders_nc = (extractive_femployer + manufacturing_femployer + ///
-	construction_femployer + transportation_femployer + extractive_fmanager + ///
-	manufacturing_fmanager + construction_fmanager + transportation_fmanager) ///
-	/ (extractive_employer + manufacturing_employer + construction_employer + ///
-	transportation_employer + extractive_manager + manufacturing_manager + ///
-	construction_manager + transportation_manager) 
 
 
 save "CorruptionWomen_Final.dta", replace 
+
+cd "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/"
 
 use "CorruptionWomen_Final.dta", clear
 
@@ -168,11 +163,9 @@ sum share_female_employer share_female_manager_priv share_female_leaders share_f
 
 sum female_lfp pct_female_employer pct_female_managers pct_female_leaders pct_female_self if corruption3_full!=.
 
-sum gdp_pc density size_informal college dist_capital male workage urban if corruption3_full!=.
+sum gdp_pc density size_informal college male workage urban if corruption3_full!=.
 
 sum agriculture extractive manufacturing electric construction rw transportation accomodation finance profserv education health publicadmin dservices if corruption3_full!=.
-
-
 
 ***** ESTIMATES 
 
@@ -214,8 +207,8 @@ foreach k in  $share_outcomes {
 	
 }
 
-esttab using "Results/Table2B.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
-esttab using "Results/Table2B.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table2B.tex", replace b(%9.3f) keep(corruption3_full $controls $sectors) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table2B.csv", replace b(%9.3f) keep(corruption3_full $controls $sectors) star(* 0.10 ** 0.05 *** 0.01) se ar2
 
 
 * PANEL C: 2SLS Results with Baseline Controls 
@@ -224,7 +217,9 @@ eststo clear
 foreach k in $share_outcomes {
     
     * Run the 2SLS regression and store the results
-    eststo: ivreg2 `k' $controls  _I* (corruption3_full = councils councils_installed management), first cluster(uf_code) partial(_cons $fixedef)
+    eststo: ivreg2 `k' $controls  _I* ///
+	(corruption3_full = councils councils_installed management judge), ///
+	first cluster(uf_code) partial(_cons $fixedef)
     
     * Add statistics for the current model
     estadd scalar F_Statistic = e(widstat)   // Weak identification test
@@ -284,8 +279,8 @@ foreach k in  $pct_outcomes {
 	
 }
 
-esttab using "Results/Table3B.tex", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
-esttab using "Results/Table3B.csv", replace b(%9.3f) keep(corruption3_full $controls) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table3B.tex", replace b(%9.3f) keep(corruption3_full $controls $sectors) star(* 0.10 ** 0.05 *** 0.01) se ar2
+esttab using "Results/Table3B.csv", replace b(%9.3f) keep(corruption3_full $controls $sectors) star(* 0.10 ** 0.05 *** 0.01) se ar2
 
 
 * PANEL C: 2SLS Results with Baseline Controls 
@@ -295,13 +290,16 @@ eststo clear
 foreach k in $pct_outcomes {
     
     * Run the 2SLS regression and store the results
-    eststo: ivreg2 `k' $controls _I* (corruption3_full = councils councils_installed management), first cluster(uf_code) partial(_cons $fixedef)
+    eststo: ivreg2 `k' $controls _I* ///
+	(corruption3_full = councils councils_installed management judge), ///
+	first cluster(uf_code) partial(_cons $fixedef)
     
     * Add statistics for the current model
     estadd scalar F_Statistic = e(widstat)   // Weak identification test
     estadd scalar J_Statistic = e(j)         // Over-identification test
     estadd scalar J_Statistic_pvalue = e(jp) // J-statistic p-value
 }
+
 
 * Export the results for all models in a single table
 esttab using "Results/Table3C.tex", replace b(%9.3f) keep(corruption3_full $controls) ///

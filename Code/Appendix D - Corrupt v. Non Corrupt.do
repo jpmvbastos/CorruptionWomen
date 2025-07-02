@@ -86,6 +86,9 @@ cap gen pct_fleader_c = pct_femployer_c + pct_fmgmt_c
 
 cap gen pct_fleader_nc = pct_femployer_nc + pct_fmgmt_nc
 
+cap gen female_lfp_c = share_female_corrupt * female_lfp_census
+cap gen female_lfp_nc = share_female_non_corrupt * female_lfp_census
+
 *------------------------------------------------------------------------------*
 * Corrupt vs. Non-Corrupt Sectors: As a share of leader positions
 *------------------------------------------------------------------------------*
