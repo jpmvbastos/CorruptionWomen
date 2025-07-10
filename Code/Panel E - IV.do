@@ -86,8 +86,12 @@ foreach k in $pct_outcomes_corrupt {
 * Just-Identified IV's 
 *==============================================================================*
 
+cd "/Users/jpmvbastos/Documents/GitHub/CorruptionWomen/"
+
+* Commenting out the J_Statistic because these are just-identified
+
 *------------------------------------------------------------------------------*
-* Replicating Table 3 - Panel C
+* Table E5: Replicating Table 4 - Panel C
 *------------------------------------------------------------------------------*
 
 global share_outcomes = "share_female_employer share_female_manager_priv share_female_leaders"
@@ -99,23 +103,53 @@ foreach v in councils councils_installed management judge {
 	foreach k in $share_outcomes {
 		
 		* Run the 2SLS regression and store the results
-		qui eststo: ivreg2 `k' $controls  _I* ///
+		qui eststo: ivreg2 `k' $controls  $fixedef ///
 		(corruption3_full = `v'), ///
 		first cluster(uf_code) partial(_cons $fixedef)
 	
 		* Add statistics for the current model
 		estadd scalar F_Statistic = e(widstat)   // Weak identification test
+		* estadd scalar J_Statistic = e(j)         // Over-identification test
 	}
 
 	* Export the results for all models in a single table
-	esttab using "Results/TableE5_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
-	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic J_Statistic J_Statistic_pvalue) se 
+	esttab using "Results/Appendix E/TableE5_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
+	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic) se 
+
+		
+	}
+	
+*------------------------------------------------------------------------------*
+* Table E6: Replicating Table 4 - Panel D
+*------------------------------------------------------------------------------*
+
+global share_outcomes_c = "share_femployer_c share_fmgmt_c share_fleaders_c"
+
+foreach v in councils councils_installed management judge {
+
+	eststo clear 
+
+	foreach k in $share_outcomes_c {
+		
+		* Run the 2SLS regression and store the results
+		qui eststo: ivreg2 `k' $controls  $fixedef ///
+		(corruption3_full = `v'), ///
+		first cluster(uf_code) partial(_cons $fixedef)
+	
+		* Add statistics for the current model
+		estadd scalar F_Statistic = e(widstat)   // Weak identification test
+		*estadd scalar J_Statistic = e(j)         // Over-identification test
+	}
+
+	* Export the results for all models in a single table
+	esttab using "Results/Appendix E/TableE6_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
+	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic) se 
 
 		
 	}
 
 *------------------------------------------------------------------------------*
-* Replicating Table 4 - Panel C
+* Table E7: Replicating Table 5 - Panel C
 *------------------------------------------------------------------------------*
 
 global pct_outcomes = "female_lfp_census pct_female_employer pct_female_managers pct_female_leaders"
@@ -133,13 +167,45 @@ foreach v in councils councils_installed management judge {
 	
 		* Add statistics for the current model
 		estadd scalar F_Statistic = e(widstat)   // Weak identification test
+		*estadd scalar J_Statistic = e(j)         // Over-identification test
 
 	}
 
 	* Export the results for all models in a single table
-	esttab using "Results/TableE6_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
-	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic J_Statistic J_Statistic_pvalue) se 
+	esttab using "Results/Appendix E/TableE7_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
+	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic) se 
+
+		
+	}
+	
+*------------------------------------------------------------------------------*
+* Table E8: Replicating Table 5 - Panel D
+*------------------------------------------------------------------------------*
+
+global pct_outcomes_c = "female_lfp_c pct_femployer_c pct_fmgmt_c pct_fleader_c"
+
+foreach v in councils councils_installed management judge {
+
+	eststo clear 
+
+	foreach k in $pct_outcomes_c {
+		
+		* Run the 2SLS regression and store the results
+		qui eststo: ivreg2 `k' $controls  _I* ///
+		(corruption3_full = `v'), ///
+		first cluster(uf_code) partial(_cons $fixedef)
+	
+		* Add statistics for the current model
+		estadd scalar F_Statistic = e(widstat)   // Weak identification test
+		*estadd scalar J_Statistic = e(j)         // Over-identification test
+
+	}
+
+	* Export the results for all models in a single table
+	esttab using "Results/Appendix E/TableE8_`v'.tex", replace b(%9.3f) keep(corruption3_full $controls) ///
+	star(* 0.10 ** 0.05 *** 0.01) stats(N F_Statistic) se 
 
 		
 	}
 
+	
