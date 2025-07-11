@@ -33,7 +33,7 @@ global fixedef = "_Isorteio_f_23 _Isorteio_f_24 _Isorteio_f_25 _Isorteio_f_26 _I
 *==============================================================================*
 
 *------------------------------------------------------------------------------*
-* Table 1: Summary stats for outcome measures
+* Table 2: Summary stats for outcome measures
 *------------------------------------------------------------------------------*
 
 * All Sectors 
@@ -51,7 +51,7 @@ sum share_femployer_c share_fmgmt_c share_fleaders_c if corruption3_full!=.
 sum female_lfp_c pct_femployer_c pct_fmgmt_c pct_fleader_c if corruption3_full!=.
 
 *------------------------------------------------------------------------------*
-* Table 2: Summary stats for outcome measures
+* Table 3: Summary stats for outcome measures
 *------------------------------------------------------------------------------*
 
 * Municipality 
@@ -62,9 +62,13 @@ sum agriculture extractive manufacturing electric construction rw transportation
 	accomodation finance profserv education health publicadmin dservices poorlydefined ///
 	if corruption3_full!=.
 	
+* IVs
+
+sum councils councils_installed management judge if corruption3_full!=. & management!=.
+	
 
 *------------------------------------------------------------------------------*
-* Table 3: Main Results, as a share of that category
+* Table 4: Main Results, as a share of that category
 *------------------------------------------------------------------------------*
 
 * PANEL A: OLS with Baseline Controls
